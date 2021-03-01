@@ -56,7 +56,8 @@ if (file.exists("dataset/UCI HAR Dataset/")){
   names(new_mean_std_data) <- gsub("mag", "magnitude", names(new_mean_std_data))
   
   # 5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
-  
-  
+  second_data <- new_mean_std_data %>% group_by(activity, subject)
+  second_data <- second_data %>% summarise_all(list(mean))
+
 }
 
