@@ -1,0 +1,67 @@
+1. when we first download the data from https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip and unzip it.
+there are features.txt and activity_labels.txt, which contain the function names and activity names and train data and test data.
+After reading data from the train data and test data files, and merge the subject and activity data together into a big table.
+The train data has 561 columns, 7352 rows, each column is a function from feature data.
+The test data has 561 columns, 2947 rows, each column is a function from feature data.
+The subject and activity data has one column and 7352 rows for train set and 561 columns for test data set.
+After the rows from train data and test data together and add colums from subject and activity data together. It contains 563 columns, 10299 rows.
+
+
+2. The names of the merged table are for example
+names(all_Data)
+  [1] "subject"                              "a_id"                                 "tBodyAcc.mean...X"                   
+  [4] "tBodyAcc.mean...Y"                    "tBodyAcc.mean...Z"                    "tBodyAcc.std...X"                    
+  [7] "tBodyAcc.std...Y"                     "tBodyAcc.std...Z"                     "tBodyAcc.mad...X"                    
+ [10] "tBodyAcc.mad...Y"                     "tBodyAcc.mad...Z"                     "tBodyAcc.max...X"                    
+ [13] "tBodyAcc.max...Y"                     "tBodyAcc.max...Z"                     "tBodyAcc.min...X"                    
+ [16] "tBodyAcc.min...Y"                     "tBodyAcc.min...Z"                     "tBodyAcc.sma.."                      
+ [19] "tBodyAcc.energy...X"                  "tBodyAcc.energy...Y"                  "tBodyAcc.energy...Z"                 
+ [22] "tBodyAcc.iqr...X"                     "tBodyAcc.iqr...Y"                     "tBodyAcc.iqr...Z"                    
+ [25] "tBodyAcc.entropy...X"                 "tBodyAcc.entropy...Y"                 "tBodyAcc.entropy...Z"                
+ [28] "tBodyAcc.arCoeff...X.1"               "tBodyAcc.arCoeff...X.2"               "tBodyAcc.arCoeff...X.3"              
+ [31] "tBodyAcc.arCoeff...X.4"               "tBodyAcc.arCoeff...Y.1"               "tBodyAcc.arCoeff...Y.2"              
+ [34] "tBodyAcc.arCoeff...Y.3"               "tBodyAcc.arCoeff...Y.4"               "tBodyAcc.arCoeff...Z.1"              
+ [37] "tBodyAcc.arCoeff...Z.2"               "tBodyAcc.arCoeff...Z.3"               "tBodyAcc.arCoeff...Z.4"   
+ It has 563 columns, we only want to select the names that contain "mean" or "std", and "subject" and "activity" columns.
+ After selecting, there are 88 columns 10299 rows.
+
+
+3. Activity date constains 6 types of activities, with id and name. We want to replace the activity id in the table from second question with the activity name in the activity date table. The table has the same size, 88 columns 10299 rows.
+
+
+4. According to the rules:
+  "all lower case", "descriptive", "not duplicated", "no underscores or dots or white spaces", I changed the current column names into the names with all lower case, fullname, no dots.
+  names(new_mean_std_data) <- tolower(names(new_mean_std_data))
+  names(new_mean_std_data) <- gsub("[.]", "", names(new_mean_std_data))
+  names(new_mean_std_data) <- gsub("acc", "accelerometer", names(new_mean_std_data))
+  names(new_mean_std_data) <- gsub("freq", "frequency", names(new_mean_std_data))
+  names(new_mean_std_data) <- gsub("^t", "time", names(new_mean_std_data))
+  names(new_mean_std_data) <- gsub("^f", "frequency", names(new_mean_std_data))
+  names(new_mean_std_data) <- gsub("gyro", "gyroscope", names(new_mean_std_data))
+  names(new_mean_std_data) <- gsub("mag", "magnitude", names(new_mean_std_data))
+The table has the same size, 88 columns 10299 rows.
+
+
+5. First group the table by two columns of "activity" and "subject" and get the mean of each group.
+We get a table of 180 rows, and 88 columns, for example:
+activity subject timebodyacceler… timebodyacceler… timebodyacceler… timegravityacce… timegravityacce… timegravityacce…
+   <chr>      <int>            <dbl>            <dbl>            <dbl>            <dbl>            <dbl>            <dbl>
+ 1 LAYING         1            0.222          -0.0405           -0.113           -0.249            0.706           0.446 
+ 2 LAYING         2            0.281          -0.0182           -0.107           -0.510            0.753           0.647 
+ 3 LAYING         3            0.276          -0.0190           -0.101           -0.242            0.837           0.489 
+ 4 LAYING         4            0.264          -0.0150           -0.111           -0.421            0.915           0.342 
+ 5 LAYING         5            0.278          -0.0183           -0.108           -0.483            0.955           0.264 
+ 6 LAYING         6            0.249          -0.0103           -0.133           -0.477            0.957           0.176 
+ 7 LAYING         7            0.250          -0.0204           -0.101           -0.503            0.393           0.908 
+ 8 LAYING         8            0.261          -0.0212           -0.102           -0.406            0.590           0.720 
+ 9 LAYING         9            0.259          -0.0205           -0.108           -0.580           -0.119           0.958 
+10 LAYING        10            0.280          -0.0243           -0.117           -0.453           -0.139          -0.0311
+
+
+And finially write the data into a text file of "data_clean_result.txt" with aggregated data.
+
+
+
+
+
+
